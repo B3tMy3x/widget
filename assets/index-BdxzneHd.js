@@ -8,10 +8,6 @@ var l=Object.defineProperty;var d=(o,e,n)=>e in o?l(o,e,{enumerable:!0,configura
             <circle cx="16" cy="12" r="1.5" fill="white"/>
           </svg>
         </div>
-        <div class="chatbot-toggle-text">
-          <span>Чат с ботом</span>
-          <small>Онлайн</small>
-        </div>
       </div>
     `;const n=document.createElement("div");n.className="chatbot-container";const i=document.createElement("div");i.className="chatbot-header",i.innerHTML=`
       <div class="chatbot-header-info">
