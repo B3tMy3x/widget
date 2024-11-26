@@ -12,9 +12,9 @@ export default defineConfig({
     outDir: 'dist/widget',
     rollupOptions: {
       output: {
-        entryFileNames: 'assets/[name]-[hash].js',
-        chunkFileNames: 'assets/[name]-[hash].js',
-        assetFileNames: 'assets/[name]-[hash][extname]'
+        entryFileNames: 'widget/assets/[name]-[hash].js',
+        chunkFileNames: 'widget/assets/[name]-[hash].js',
+        assetFileNames: 'widget/assets/[name]-[hash][extname]'
       }
     }
   }
