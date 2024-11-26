@@ -95,6 +95,20 @@ class ChatbotWidget {
     this.inputElement.addEventListener('keypress', (e) => {
       if (e.key === 'Enter') this.sendMessage();
     });
+
+    this.loadMessages();
+  }
+
+  private loadMessages() {
+    const storedMessages = localStorage.getItem('chatMessages');
+    if (storedMessages) {
+      this.state.messages = JSON.parse(storedMessages);
+      this.state.messages.forEach((message: Message) => this.renderMessage(message));
+    }
+  }
+
+  private saveMessages() {
+    localStorage.setItem('chatMessages', JSON.stringify(this.state.messages));
   }
 
   private async sendMessage() {
@@ -120,17 +134,31 @@ class ChatbotWidget {
     await new Promise(resolve => setTimeout(resolve, 1500 + Math.random() * 1000));
 
     this.state.isTyping = false;
-    const botMessage: Message = {
-      id: (Date.now() + 1).toString(),
-      text: 'Извините, в данный момент я не могу ответить на ваше сообщение.',
-      sender: 'bot',
-      timestamp: new Date()
-    };
+    const botMessage: Message = await this.fetchBotMessage(text);
 
     this.state.messages.push(botMessage);
     this.removeTypingIndicator();
     this.renderMessage(botMessage);
     this.scrollToBottom();
+
+    this.saveMessages();
+  }
+
+  private async fetchBotMessage(userMessage: string): Promise<Message> {
+    const response = await fetch(`http://localhost:8000/stream?query=${encodeURIComponent(userMessage)}`, {
+      method: 'GET',
+      headers: {
+        'accept': 'application/json'
+      }
+    });
+
+    const data = await response.json();
+    return {
+      id: Date.now().toString(),
+      text: data.message || 'Извините, в данный момент я не могу ответить на ваше сообщение.',
+      sender: 'bot',
+      timestamp: new Date()
+    };
   }
 
   private renderMessage(message: Message) {

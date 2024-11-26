@@ -1,18 +1,21 @@
 import { defineConfig } from 'vite';
 
 export default defineConfig({
+  base: '/widget/',
   build: {
     lib: {
-      entry: './src/widget.ts',
+      entry: 'src/widget/index.ts',
       name: 'ChatbotWidget',
-      fileName: 'chatbot-widget',
+      formats: ['umd'],
+      fileName: 'chatbot-widget'
     },
+    outDir: 'dist/widget',
     rollupOptions: {
       output: {
-        globals: {
-          'chatbot-widget': 'ChatbotWidget',
-        },
-      },
-    },
-  },
+        entryFileNames: 'assets/[name]-[hash].js',
+        chunkFileNames: 'assets/[name]-[hash].js',
+        assetFileNames: 'assets/[name]-[hash][extname]'
+      }
+    }
+  }
 });
